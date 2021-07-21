@@ -23,7 +23,7 @@ export function ProgressionInfoBar() {
 
                 <TouchableOpacity onPress={() => null}>
                     <View style={{ paddingLeft: 10, paddingRight: 10, borderWidth: 1, height: 50, justifyContent: 'center' }}>
-                    <Text>Mode</Text>
+                        <Text>Mode</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 50,
         paddingRight: 50,
-        borderRadius: 8,
     },
     
     currentProgressionBottom: {

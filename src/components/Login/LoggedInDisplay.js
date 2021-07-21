@@ -4,20 +4,26 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Button, Portal, Modal, HelperText, TextInput } from 'react-native-paper';
 
 export function LoggedInDisplay(){
-    // 
     const data = {
-        email: 'azula@gmail.com',
-        password: 'badaf',
+        email: '',
+        password: '',
     };
 
     const containerStyle = {
         backgroundColor: 'white', 
-        paddingTop: 100, 
-        paddingBottom: 100, 
-        marginLeft: 25, 
-        marginRight: 25,
-        justifyContent: 'center',
-        alignItems: 'center',
+        paddingTop: 5, 
+        paddingBottom: 5, 
+        marginLeft: '5%', 
+        width: '90%',
+
+        shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 8,
+		},
+		shadowOpacity: 0.44,
+		shadowRadius: 6.62,
+		elevation: 8,
     }
     
     // Open/Close Sign Up Panel
@@ -145,6 +151,7 @@ export function LoggedInDisplay(){
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                     <View>  
                         <TextInput 
+                            style={styles.nicknameInput}
                             label="Nickname"
                             selectionColor="blue"
                             placeholder="ex. MusicalDude2"
@@ -153,17 +160,19 @@ export function LoggedInDisplay(){
                         />
 
                         <TextInput 
+                            style={styles.modalInput}
                             label="Email"
                             selectionColor="blue"
                             placeholder="Email@domain.com"
                             underlineColor="#651fff"
                             onChangeText={onSignupEmailChange}
                         />
-                        <HelperText type="error" visible={emailRequirements()}>
+                        <HelperText style={styles.helperInput} type="error" visible={emailRequirements()}>
                             Email address in invalid
                         </HelperText>
 
                         <TextInput 
+                            style={styles.modalInput}
                             label="Password"
                             placeholder="Password"
                             underlineColor="#651fff"
@@ -171,11 +180,12 @@ export function LoggedInDisplay(){
                             // right={<TextInput.Icon name="eye"/>}
                             onChangeText={onSignupPassChange}
                         />
-                        <HelperText type="error" visible={isValidPass()}>
+                        <HelperText style={styles.helperInput} type="error" visible={isValidPass()}>
                             Your passwords must contain -- ! --
                         </HelperText>
 
                         <TextInput 
+                            style={styles.modalInput}
                             label="Password"
                             placeholder="Password"
                             underlineColor="#651fff"
@@ -183,7 +193,7 @@ export function LoggedInDisplay(){
                             // right={<TextInput.Icon name="eye"/>}
                             onChangeText={onVerifyPassChange}
                         />
-                        <HelperText type="error" visible={hasValidationErrors()}>
+                        <HelperText style={styles.helperInput} type="error" visible={hasValidationErrors()}>
                             Your passwords must match!
                         </HelperText>
 
@@ -194,29 +204,29 @@ export function LoggedInDisplay(){
                     </View>
                 </Modal>
             </Portal>
-            <Text>{user}</Text>
-            <View>
+            <Text style={styles.nicknameDisplay}>{user}</Text>
+            <View style={styles.loginInput}>
                 <TextInput 
                     label="Email"
-                    selectionColor="blue"
                     placeholder="Email@domain.com"
-                    underlineColor="#651fff"
+                    underlineColor="#009dff"
                     onChangeText={onEmailChange}
+                    style={styles.inputField}
                 />
-                <HelperText type="error" visible={emailRequirements()}>
+                <HelperText style={{marginBottom: 20}} type="error" visible={emailRequirements()}>
                     Email address in invalid
                 </HelperText>
 
                 <TextInput 
-                    style=""
                     label="Password"
                     placeholder="Password"
-                    underlineColor="#651fff"
+                    underlineColor="#009dff"
                     secureTextEntry
                     right={<TextInput.Icon name="eye"/>}
                     onChangeText={onPasswordChange}
+                    style={styles.inputField}
                 />
-                <HelperText>
+                <HelperText style={{marginBottom: 20}}>
                     
                 </HelperText>
                 <Button style={styles.button1} icon="login" mode="contained" onPress={() => {doLogin()}}>
@@ -249,10 +259,41 @@ const styles = StyleSheet.create({
 
     button2: {
         marginTop: 15,
-        marginBottom: 15,
     },
 
-    username: {
-
+    nicknameDisplay: {
+        marginBottom: 20,
     },
+
+    loginInput: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '90%',
+    },  
+
+    inputField: {
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#f5fcff',
+        width: 300
+    },
+
+    modalInput: {
+        marginRight: '10%',
+        marginLeft: '10%',
+    },
+
+    nicknameInput: {
+        marginRight: '10%',
+        marginLeft: '10%',
+        marginBottom: '10%',
+        marginTop: '5%',
+    },
+
+    helperInput: {
+        marginRight: '10%',
+        marginLeft: '10%',
+        marginBottom: '5%',
+    }
+
 });

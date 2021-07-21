@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native';
-import { Card } from 'react-native-paper';
+import { View, StyleSheet, Text } from 'react-native';
+import { Card, Provider } from 'react-native-paper';
 
 export function Chordbox({chord}){
     return(
 		<Card style={styles.chordBox}>
-			<Card.Title>{chord}</Card.Title>
+			<Text>{chord}</Text>
 		</Card>      
     );
 }
@@ -13,7 +13,16 @@ export function Chordbox({chord}){
 const styles = StyleSheet.create({
 	chordBox: {
 		flex: 1,
-		backgroundColor: 'white',
-		margin: 5,
+		display: 'flex',
+		backgroundColor: 'orange',
+		margin: 2,
+		// shadowColor: "#000",
+		// shadowOffset: {
+		// 	width: 0,
+		// 	height: 2,
+		// },
+		// shadowOpacity: 0.23,
+		// shadowRadius: 2.62,
+		// elevation: 4,
 	}
 })

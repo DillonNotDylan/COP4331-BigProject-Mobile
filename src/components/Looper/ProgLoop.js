@@ -1,55 +1,76 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Chordbox } from './Chordbox'
-import { Card, Button } from 'react-native-paper';
+import { Card, Button, Provider } from 'react-native-paper';
 
 
 export function ProgLoop ({loopData, id, deleteLoop}) {
 	return (
-		<View>
-			<Card>
-				<Card style={styles.card}>
-					<Card.Content>
-						<Button
-							onClick={() => deleteLoop(id)}>
-						</Button>
-					</Card.Content>
-
-					<Card.Content>
-						<View style={styles.chordContainer}>
-						{
-							loopData.chords.map(singleChord =>
-								{
-									return (
-										<View style={styles.chord}>
-											<Chordbox chord={singleChord}/>
-										</View>
-									)
-								}
-							)
-						}
-						</View>
-					</Card.Content>
-				</Card>
-
-			</Card>
+		<View style={styles.chordContainer}>
+			{/* <Button
+				onClick={() => deleteLoop(id)}>
+			</Button> */}
+			{
+				loopData.chords.map(singleChord =>
+					{
+						return (
+							<TouchableOpacity style={styles.chordBox} onPress={() => null}>
+							{/* <Card style={styles.chordBox}> */}
+								<Text style={styles.chord}>{singleChord}</Text>
+							</TouchableOpacity>
+						)
+					}
+				)
+			}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	card: {
-		backgroundColor: '#f5fcff'
-	},
-
     chordContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      backgroundColor: 'yellow',
+		display: 'flex',
+		flexDirection: 'row',
+		flex: 1,
+		width: '95%',
+		backgroundColor: 'white',
+		borderRadius: 10,
+		marginTop: 3,
+
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 1,
+		},
+		shadowOpacity: 0.22,
+		shadowRadius: 2.22,
+		elevation: 3,
     },
 
-	chord: {
+	chordBox: {
+		display: 'flex',
 		flex: 1,
-		backgroundColor: 'purple',
+		marginTop: '4%',
+		height: '70%',
+
+		borderRadius: 10,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginLeft: 10,
+		marginRight: 10,
+			
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.23,
+		shadowRadius: 2.62,
+		elevation: 4,
+	},
+
+	chord: {
+		display: 'flex',
+		flex: 1,
+		textAlignVertical: 'center'
 	}
 })
