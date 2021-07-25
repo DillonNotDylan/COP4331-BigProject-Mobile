@@ -1,14 +1,12 @@
 import React from 'react';
 import Constants from 'expo-constants';
 import { StyleSheet, Text, View } from 'react-native';
-import { ProjectDisplay } from '../components/ProjectDisplay'
-import { ProgressionInfoBar } from '../components/ProgressionInfoBar'
 import { LoopBox } from '../components/Looper/LoopBox';
 import { ToolPage } from '../components/Tools/ToolPage.js';
 
 import { Piano } from '../components/Piano/Piano';
+import ControlPanel from '../components/ToolControl/ControlPanel';
 
-import { TestSound } from '../components/TestSound.js';
 
 const statusBarHeight = Constants.statusBarHeight
 
@@ -26,20 +24,20 @@ export class HomeScreen extends React.Component {
                 </View>
 
                 {/* Display the piano */}
-                <View style={styles.pianoContainer}>
+                {/* <View style={styles.pianoContainer}>
                   <Piano/>
-                </View>
+                </View> */}
 
                 {/* <ProgressionInfoBar/> */}
-                <View style={styles.toolPageContainer}>
-                  <ToolPage/>
+                <View style={styles.toolContainer}>
+                  <ControlPanel/>
                 </View>
                 {/* <TestSound /> */}
                 
                 {/* <ProjectDisplay/> */}
-                <View style={styles.loopContainer}>
+                {/* <View style={styles.loopContainer}>
                   <LoopBox/>
-                </View>
+                </View> */}
 
             </View>
         );
@@ -56,16 +54,17 @@ const styles = StyleSheet.create({
     },
   
     topnav: {
-      flex: 0,
+      flex: 0.075,
       marginTop: -15,
     },
   
     title: {
-      flex: 0.075,
+      flex: 0.055,
       alignItems: 'center',
       justifyContent: 'center',
       width: '65%',
       margin: 10,
+      marginBottom: 30,
       backgroundColor: 'white',
       borderRadius: 5,
       
@@ -79,47 +78,14 @@ const styles = StyleSheet.create({
       elevation: 6,
     },
   
-    pianoContainer:
-    {
-      flex: 0.15,
-      backgroundColor: 'grey',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: '95%',
-      margin: 10,
-
-
-      shadowColor: "#000",
-		  shadowOffset: {
-			  width: 0,
-			  height: 5,
-		  },
-		  shadowOpacity: 0.22,
-		  shadowRadius: 2.22,
-		  elevation: 10,
-    },
-
-    loopContainer: {
+    toolContainer: {
       display: 'flex',
-      flex: 0.5,
+      flex: 70,
       backgroundColor: 'white',
       alignItems: 'center',
       justifyContent: 'center',
       width: '95%',
-      margin: 10,
-      maxHeight: '90%', 
-    },
-
-    toolPageContainer: {
-      display: 'flex',
-      flex: 0.1,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: '95%',
-      margin: 10,
-      maxHeight: '90%', 
+      maxHeight: '85%', 
 
       shadowColor: "#000",
 		  shadowOffset: {
