@@ -1,78 +1,86 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native';
-import { Card, RadioButton } from 'react-native-paper';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+	Card,
+	Switch,
+	Text,
+	Menu, 
+	Button
+} from 'react-native-paper'
 
-export function KeyBox({currOption}) {
+export function KeyBox({currOption, grabKey, grabMode, status, switchStatus}) {
 
-	// const boxClasses = boxStyles();
-	// const cardClasses = cardStyles();
-	const [currKey, setKey] = useState('');
-	const [currQuality, setQuality] = useState(false);
-	const [checked, setChecked] = useState('Major');
+	const [currKey, setKey] = useState('C');
 
-	const handleChange = (event) => {
-		setKey(event.target.value);
-	};
+	const [visible, setVisible] = useState(false);
 
-	const handleQuality = () =>{
-		setQuality(!currQuality);
+	const openMenu = () => setVisible(true);
+
+	const onlyClose = () => setVisible(false); 
+  
+	const closeMenu = (key) => {
+		setKey(key);
+		setVisible(false);
 	}
 
+	const [isSwitchOn, setIsSwitchOn] = useState(false);
+
+	const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
 	return(
-		<View style={styles.container}>
-			{/* <Card> */}
-				{/* <FormControl variant="outlined" className={boxClasses.formControl}>
-					<InputLabel className={boxClasses.formControl} id="key-label">Key</InputLabel>
-					<Select className={boxClasses.formControl}
-						value={currKey}
-						onChange={handleChange}
-						label="Key"
-					>
-						<MenuItem value={1}>C</MenuItem>
-						<MenuItem value={2}>C#</MenuItem>
-						<MenuItem value={3}>D</MenuItem>
-						<MenuItem value={4}>D#</MenuItem>
-						<MenuItem value={5}>E</MenuItem>
-						<MenuItem value={6}>F</MenuItem>
-						<MenuItem value={7}>F#</MenuItem>
-						<MenuItem value={8}>G</MenuItem>
-						<MenuItem value={9}>G#</MenuItem>
-						<MenuItem value={10}>A</MenuItem>
-						<MenuItem value={11}>A#</MenuItem>
-						<MenuItem value={12}>B</MenuItem>
-					</Select>
-				</FormControl> */}
+		<View style={styles.root}>
+			<Card style={styles.menu}>
+				{/* <Button onPress={() => setVisible(true)}>Key</Button> */}
+				<Menu
+					visible={visible}
+					onDismiss={onlyClose}
+					anchor={<Button style={{}} onPress={openMenu}>{currKey}</Button>}>
+					
+						<Menu.Item onPress={() => closeMenu('C')} title="C" />
+						<Menu.Item onPress={() => closeMenu('C#')} title="C#" />
+						<Menu.Item onPress={() => closeMenu('D')} title="D" />
+						<Menu.Item onPress={() => closeMenu('D#')} title="D#" />
+						<Menu.Item onPress={() => closeMenu('E')} title="E" />
+						<Menu.Item onPress={() => closeMenu('F')} title="F" />
+						<Menu.Item onPress={() => closeMenu('F#')} title="F#" />
+						<Menu.Item onPress={() => closeMenu('G')} title="G" />
+						<Menu.Item onPress={() => closeMenu('G#')} title="G#" />
+						<Menu.Item onPress={() => closeMenu('A')} title="A" />
+						<Menu.Item onPress={() => closeMenu('A#')} title="A#" />
+						<Menu.Item onPress={() => closeMenu('B')} title="B" />
+				</Menu>
+			</Card>
 
-			{/* </Card> */}
-
-			<Card style={styles.majMinCard}> 
-				<Text>TESTING</Text>
-				
+			<Card style={styles.quality}>
+				<Text style={{}}>
+					{isSwitchOn ? 'Minor' : 'Major'}
+				</Text>
+					<Switch style={{}} value={isSwitchOn} onValueChange={onToggleSwitch} />
 			</Card>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
-    container: {
-      	alignItems: 'center',
-      	justifyContent: 'center',
-		height: 10,
-    },
-
-	// card: {
-		// 	display: 'flex',
-		// 	flex: 1,
-		// },
-		
-	majMinCard: {
-
+	root: {
+		flexDirection: "row",
+		display: "flex",
+		backgroundColor: 'white'
 	},
 
-	majMinRadio: {
-		display: 'flex',
-		flex: 1,
-		flexDirection: 'row',
-	}
+	menu: {
+		width: '25%',
+		padding: 5,
+		alignItems: 'center',
+		backgroundColor: 'white',
+	},
+
+	quality: {
+		margin: 7,
+		padding: 5,
+
+		alignItems: 'center',
+		width: '48.8%',
+	},
+
 });

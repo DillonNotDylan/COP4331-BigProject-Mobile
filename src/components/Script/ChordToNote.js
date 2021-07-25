@@ -104,18 +104,25 @@ const getChordNotes = (chord) => {
 		chordRootNumber = key_to_number.indexOf(chordRoot)
 	}
 
+	else {
+		chordRoot = chord[0]
+		chordRootNumber = key_to_number.indexOf(chordRoot)
+	}
+
 	if(chord.includes('min')) {
 		if(chord.includes('7')){
 			chordNotes.push(scales[5][chordRootNumber][0])
 			chordNotes.push(scales[5][chordRootNumber][2])
 			chordNotes.push(scales[5][chordRootNumber][4])
 			chordNotes.push(scales[5][chordRootNumber][6])
+			console.log('returning '+chordNotes);
 			return chordNotes
 		}
 		else {
 			chordNotes.push(scales[5][chordRootNumber][0])
 			chordNotes.push(scales[5][chordRootNumber][2])
 			chordNotes.push(scales[5][chordRootNumber][4])
+			console.log('returning '+chordNotes);
 			return chordNotes
 		}
 	}
@@ -126,12 +133,14 @@ const getChordNotes = (chord) => {
 			chordNotes.push(scales[0][chordRootNumber][2])
 			chordNotes.push(scales[0][chordRootNumber][4])
 			chordNotes.push(scales[0][chordRootNumber][6])
+			console.log('returning '+chordNotes);
 			return chordNotes
 		}
 		else {
 			chordNotes.push(scales[0][chordRootNumber][0])
 			chordNotes.push(scales[0][chordRootNumber][2])
 			chordNotes.push(scales[0][chordRootNumber][4])
+			console.log('returning '+chordNotes);
 			return chordNotes
 		}
 	}
@@ -166,11 +175,13 @@ const getChordNotes = (chord) => {
 			chordNotes.push(scales[0][chordRootNumber][0])
 			chordNotes.push(scales[0][chordRootNumber][1])
 			chordNotes.push(scales[0][chordRootNumber][4])
+			return chordNotes
 		}
 		else {
 			chordNotes.push(scales[0][chordRootNumber][0])
 			chordNotes.push(scales[0][chordRootNumber][3])
 			chordNotes.push(scales[0][chordRootNumber][4])
+			return chordNotes
 		}
 	}
 }

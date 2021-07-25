@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { Key } from './Key';
 import { NOTES, VALID_KEYS, KEY_TO_NOTE } from './Constants'
@@ -12,72 +12,34 @@ class Piano extends React.Component {
         pressedKeys: [],
       };
     }
-  
-    // playNote = (note) => {
-    //   if (!_.isEmpty(note)) {
-    //     const noteAudio = new Audio(document.getElementById(note).src);
-    //     noteAudio.play();
-    //   }
-    // }
-  
-    // handleKeyDown = (event) => {
-    //   if (event.repeat) {
-    //     return;
-    //   }
-    //   const key = event.key;
-    //   const updatedPressedKeys = [...this.state.pressedKeys];
-    //   if (!updatedPressedKeys.includes(key) && VALID_KEYS.includes(key)) {
-    //     updatedPressedKeys.push(key);
-    //   }
-    //   this.setState({
-    //     pressedKeys: updatedPressedKeys,
-    //   });
-    //   this.playNote(KEY_TO_NOTE[key]);
-    // }
-  
-    // handleKeyUp = (event) => {
-    //   const index = this.state.pressedKeys.indexOf(event.key);
-    //   if (index > -1) {
-    //     this.setState(state => ({
-    //       pressedKeys: state.pressedKeys.splice(index, 1)
-    //     }));
-    //   }
-    // }
-  
-    // componentDidMount = () => {
-    //   window.addEventListener('keydown', this.handleKeyDown);
-    //   window.addEventListener('keyup', this.handleKeyUp);
-    // }
+    
   
     render() {
+      let isOctaveOne = true;
+
       const keys = _.map(NOTES, (note, index) => {
+        if (index > 11) {
+          isOctaveOne = false;
+        }
         return (
           <Key
             key={index}
             note={note}
-            pressedKeys={this.state.pressedKeys}
+            // pressedKeys={this.state.pressedKeys}
+            octaveOne={isOctaveOne}
+            triggerNote={this.props.triggerNote}
+            flatCSS={this.props.flatCSS}
+            naturalCSS={this.props.naturalCSS}
+            specialNaturalCSS={this.props.specialNaturalCSS}
           />
         );
       });
-  
-    //   const audioFiles = _.map(NOTES, (note, index) => {
-    //     return (
-    //       <audio
-    //         id={note}
-    //         key={index}
-    //         src={`../../notes/${note}.mp3`}
-    //       />
-    //     );
-    //   });
   
       return (
         <View>
           <View style={styles.piano}>
             {keys}
           </View>
-          {/* <div>
-            {audioFiles}
-          </div> */}
         </View>
       );
     }
