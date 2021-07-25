@@ -7,31 +7,21 @@ const loopTemp = [
 	{
 		placement: 0,
 		name: "Verse",
-		chords: ["Am", "C", "B", "F"]
+		chords: ["A_min", "C_maj", "B_maj", "F_maj"]
 	},
 	{
 		placement: 1,
 		name: "Chorus",
-		chords: ["Gm", "C7", "Bm", "F#m"]
+		chords: ["G_min", "C_dom_7", "B_min", "F_sharp_min"]
 	},
 	{
 		placement: 2,
 		name: "Bridge",
-		chords: ["Am", "C", "Bb", "Fm"]
+		chords: ["A_min", "C_maj", "C_sharp_maj", "F_min"]
 	},
-	// {
-	// 	placement: 3,
-	// 	name: "Chorus",
-	// 	chords: ["Gm", "C7", "Bm", "F#m"]
-	// },
-	// {
-	// 	placement: 4,
-	// 	name: "Chorus",
-	// 	chords: ["Gm", "C7", "Bm", "F#m"]
-	// },
 ]
 
-export function LoopBox(){
+export function LoopBox(props){
 
 
 	const [currProj, setProj] = useState(loopTemp)
@@ -39,13 +29,12 @@ export function LoopBox(){
 	function addNewLoop() {
 		console.log("in here")
 		let temp = [...currProj]
-		// let temp = currProj
 		let len = temp.length
 		temp.push(
 			{
 				placement: len,
 				name: "Another Loop",
-				chords: ["Am", "C", "Bb", "Fm"]
+				chords: ["A_min", "C_maj", "C_sharp_maj", "F_min"]
 			}
 		)
 
@@ -54,7 +43,7 @@ export function LoopBox(){
 	}
 
 	function deleteLoop (index) {
-		console.log("In delete loop")
+		console.log("In delete loop, index: "+ { index })
 		let temp = [...currProj]
 
 		if (index === -1)
@@ -64,54 +53,21 @@ export function LoopBox(){
 		setProj(temp)
 	}
 
-	// 'user/${userID}/get-projects'
-	// 60e3a8a3b2bfc802215b2535
-	function getData() {
-		let userID = "60ebdf0a171f280086b81f57"
-		const res = axios.get(`https://chordeographer.herokuapp.com/${userID}/get-projects`)
-		.then(function (response) {
-			console.log(response.data);
-		})
-		.catch(function (error) {
-			console.log(error);
-		})  
-	}
-
-	
-	async function getProjectById () {
-		let userID = "60ebdf0a171f280086b81f57"
-
-		const res = await axios.post("https://chordeographer.herokuapp.com/get-project",
-			{
-				pid: "60ebdfaa171f280086b81f5f"
-
-				
-			}
-		)
-		
-		// console.log(res)
-		.then(function (response) {
-			console.log(response.data);
-		})
-		.catch(function (error) {
-			console.log(error);
-		})
-	}
-
     return(
-			<View style={styles.container}>
-				<Card style={styles.loopBoxContainer}>
-				{
-					currProj.map((loop, index) => {
-						console.log(loop)
-						return (
-							<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop}/>
-						)
-					})
-				}
-				<Button onPress={() => console.log("new loop")}> New Loop</Button>		
-				</Card> 
-			</View>
+		<View style={styles.container}>
+			<Card style={styles.loopBoxContainer}>
+			{
+				currProj.map((loop, index) => {
+					// console.log(loop)
+					return (
+						<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop} triggerNote={props.triggerNote}/>
+					)
+				})
+			}
+			{/* <Button onPress={() => console.log("new loop")}> New Loop</Button>		 */}
+			<Button onPress={addNewLoop}> New Loop</Button>		
+			</Card> 
+		</View>
     );
 }
 
@@ -121,12 +77,14 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
-		flex: 1,
+		flex: 100,
 		width: '100%',
+		margin: 100,
 	},
 
     loopBoxContainer: {
 		backgroundColor: 'white',
+		flex: 10,
       	alignItems: 'center',
       	justifyContent: 'center',
 	  	borderRadius: 10,
