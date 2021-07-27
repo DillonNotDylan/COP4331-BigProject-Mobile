@@ -695,10 +695,8 @@ const getAllSuggestions = (chord1, chord2, chord3, chord4, chord_position, key, 
 	displaySugestions();
 }
 
-// const test = () => console.log("Testy testy")
 
 export default getAllSuggestions
 // Parameters
 //      Chord1 (str), Chord2(str), Chord3(str), Chord4(str), Chord_Position(int), Key(str), Mode(int)
-
-// getAllSuggestions('C_maj', 'NULL', 'NULL', 'G_maj', 1, 'C', 1);
+// 		getAllSuggestions('C_maj', 'NULL', 'NULL', 'G_maj', 1, 'C', 1);

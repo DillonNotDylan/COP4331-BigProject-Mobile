@@ -1,104 +1,32 @@
 import _ from 'lodash';
-import React from 'react';
-import Soundfont from 'soundfont-player';
+import React, { useState, useEffect } from 'react';
+import { Audio } from 'expo-av';
 import { NOTE_TO_KEY } from './Constants';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { KeyHelper } from './KeyHelper';
 
 
-class Key extends React.Component {
-
-
-    playNote = () => {
-        console.log("Are we here")
-
-		const ac = new AudioContext();
-		let plyr = null;
-	
-		Soundfont.instrument(ac, 'acoustic_grand_piano', {loop: false,adsr: [0, 0, 1, 0]}, ).then(function (instrument) {
-			instrument.schedule( ac.currentTime,
-					[{ time: 0, note: "C4" }, { time: 0, note: "E4" }, { time: 0, note: "G4" }, 
-					{ time: .5, note: "A4" }, { time: .5, note: "E4" }, { time: .5, note: "C4" },
-					{ time: 1, note: "A4" }, { time: 1, note: "F4" }, { time: 1, note: "C4" }]
-				)
-			}
-		
-		).catch(function (err) {
-			console.log('err', err);
-		});
-
-        return;
-
-	}
-
-
-    noteIsFlat = (note) => {
-        return note.length > 1;
-    }
-
-    keyIsPressed = (note, pressedKey) => {
-        return _.includes(pressedKey, NOTE_TO_KEY[note]);
-    }
-
-    render () {
-        let keyClassName = this.props.note;
-        const noteIsFlat = this.noteIsFlat(this.props.note);
-        const keyIsPressed = this.keyIsPressed(this.props.note, this.props.pressedKey)
+export function Key(props) {
     
-        if (noteIsFlat) {
-            keyClassName += "flat";
-        }
-    
-        if (keyIsPressed) {
-            keyClassName += "pressed";
-        }
-    
-        let key;
+    const [sound, setSound] = useState();
 
-
-        if (noteIsFlat) {
-            key = <Text style={styles.keyFlat}>{keyClassName}</Text>
-        }
-        else {
-            if (this.props.note.includes('c') || this.props.note.includes('f')) {
-                key = (
-                    <View style={styles.keyClassName}>
-                        <Text style={styles.keyTextForC}>
-                        </Text>
-                    </View>
-                );
-            }
-            else {
-                key = (
-                    <View style={styles.keyClassName}>
-                        <TouchableOpacity onPress={() => {
-                            const ac = new AudioContext();
-                            let plyr = null;
-
-                            Soundfont.instrument(ac, 'acoustic_grand_piano', {loop: false,adsr: [0, 0, 1, 0]}, ).then(function (instrument) {
-                                instrument.schedule( ac.currentTime,
-                                        [{ time: 0, note: "C4" }, { time: 0, note: "E4" }, { time: 0, note: "G4" }, 
-                                        { time: .5, note: "A4" }, { time: .5, note: "E4" }, { time: .5, note: "C4" },
-                                        { time: 1, note: "A4" }, { time: 1, note: "F4" }, { time: 1, note: "C4" }]
-                                    )
-                                }
-
-                            ).catch(function (err) {
-                                console.log('err', err);
-                            });
-                        }}>
-                            <Text style={styles.keyText}>
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                );
-            }
-        }
-
-        return key;
-    }
+    return (
+        <View>
+            <KeyHelper  
+                key={props.index}
+                note={props.note}
+                pressedKeys={props.pressedKeys} 
+                sound={sound} 
+                setSound={setSound}
+                octaveOne={props.octaveOne}
+                triggerNote={props.triggerNote}
+                flatCSS={props.flatCSS}
+                naturalCSS={props.naturalCSS}
+                specialNaturalCSS={props.specialNaturalCSS}
+            />
+        </View>
+    );
 }
-
-export { Key };
 
 const styles = StyleSheet.create({
     keyText: {

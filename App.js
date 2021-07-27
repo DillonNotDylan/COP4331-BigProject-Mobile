@@ -7,6 +7,30 @@ import { SettingsScreen } from './src/views/settings';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
+const storeData = async (value) => {
+  try {
+      // const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('@storage_Key', value)
+  } 
+
+  catch (e) {
+      console.log('Couldnt store local data')
+  }
+}
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@storage_Key')
+    if(value !== null) {
+      console.log(value)
+    }
+  } 
+  
+  catch(e) {
+    // error reading value
+  }
+}
+
 const AppNavigator = createMaterialBottomTabNavigator(
   {
     HowTo: {
@@ -48,7 +72,7 @@ export default class App extends React.Component {
   render() {
     return (
       <PaperProvider>
-        <AppContainer />
+        <AppContainer color={'yellow'}/>
       </PaperProvider>
     );
   }

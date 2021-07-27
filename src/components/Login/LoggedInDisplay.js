@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Portal, Modal, HelperText, TextInput } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function LoggedInDisplay(){
     const data = {
@@ -78,12 +79,30 @@ export function LoggedInDisplay(){
         return false
     }
 
-    // function loggers(){
-    //     console.log("sign Up "+signupPassText)
-    //     console.log("Verify Pass "+verifyPassText)
-    //     console.log("Nickname "+nicknameText)
-    //     console.log("email "+signupEmailText)
+    const storeData = async (value) => {
+        try {
+            // const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem('@storage_Key', value)
+        } 
+
+        catch (e) {
+            console.log('Couldnt store local data')
+        }
+    }
+
+    // const getData = async () => {
+    //     try {
+    //       const value = await AsyncStorage.getItem('@storage_Key')
+    //       if(value !== null) {
+    //         console.log(value)
+    //       }
+    //     } 
+        
+    //     catch(e) {
+    //       // error reading value
+    //     }
     // }
+      
 
     function doLogin(){
         const tempUser =
@@ -103,8 +122,9 @@ export function LoggedInDisplay(){
             }
             else
             {
-                console.log(response)
+                // console.log(response)
                 console.log(response.data.nickname)
+                storeData(response.data.id)
                 setUser("Welcome " + response.data.nickname)
             }
         })
@@ -232,6 +252,10 @@ export function LoggedInDisplay(){
                 <Button style={styles.button1} icon="login" mode="contained" onPress={() => {doLogin()}}>
                     Sign In
                 </Button>
+{/* 
+                <Button onPress={getData}>
+
+                </Button> */}
                 <Button style={styles.button2} onPress={showModal}>
                     Don't have an account? Create one here!
                 </Button>
@@ -275,12 +299,29 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#f5fcff',
-        width: 300
+        width: 300,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
     },
 
     modalInput: {
         marginRight: '10%',
         marginLeft: '10%',
+        backgroundColor: '#f5fcff',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
     },
 
     nicknameInput: {
@@ -288,6 +329,15 @@ const styles = StyleSheet.create({
         marginLeft: '10%',
         marginBottom: '10%',
         marginTop: '5%',
+        backgroundColor: '#f5fcff',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
     },
 
     helperInput: {
