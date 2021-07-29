@@ -199,7 +199,7 @@ export function LoopBox(props){
 				}
 			<View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
 				<Button onPress={addNewLoop}> New Loop</Button>	
-				<Button onPress={save}>Save Changes</Button>	
+				<Button onPress={save}>Save Progression</Button>	
 			</View>
 			</Card> 
 		</View>
