@@ -31,7 +31,7 @@ export default function SwapInfo(props) {
 							{props.beforeChord}
 						</Text>
 						<Text icon='arrow'>
-							{'=>'}
+							{' => '}
 						</Text>
 						<Text >
 							{props.afterChord}
@@ -39,7 +39,7 @@ export default function SwapInfo(props) {
 					</View>
 
 					<Text >
-						Put in a description by Dillon here in this paragraph. Write about why a certain chord was suggested
+						{props.description}
 					</Text>
 				</Card.Content>
 

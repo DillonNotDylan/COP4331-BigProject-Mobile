@@ -208,6 +208,37 @@ export function LoggedInDisplay(){
     const [hideSignUp, setSigninButton] = useState(0)
     const [signUpButtonText, setSignupButton] = useState('Sign In')
 
+	const notLoggedIn = () =>
+	{
+		return (
+			<>
+			<TextInput 
+                    label="Email"
+                    placeholder="Email@domain.com"
+                    underlineColor="#009dff"
+                    onChangeText={onEmailChange}
+                    style={styles.inputField}
+                />
+                <HelperText style={{marginBottom: 20}} type="error" visible={emailRequirements()}>
+                    Email address in invalid
+                </HelperText>
+
+                <TextInput 
+                    label="Password"
+                    placeholder="Password"
+                    underlineColor="#009dff"
+                    secureTextEntry
+                    right={<TextInput.Icon name="eye"/>}
+                    onChangeText={onPasswordChange}
+                    style={styles.inputField}
+                />
+                <HelperText style={{marginBottom: 20}}>
+                    
+                </HelperText>
+			</>
+		);
+	}
+
     return(
         <View style={styles.container}>
             <Portal>
@@ -269,33 +300,18 @@ export function LoggedInDisplay(){
             </Portal>
             <Text style={styles.nicknameDisplay}>{user}</Text>
             <View style={styles.loginInput}>
-                <TextInput 
-                    label="Email"
-                    placeholder="Email@domain.com"
-                    underlineColor="#009dff"
-                    onChangeText={onEmailChange}
-                    style={styles.inputField}
-                />
-                <HelperText style={{marginBottom: 20}} type="error" visible={emailRequirements()}>
-                    Email address in invalid
-                </HelperText>
+                {
+					user.char
+				}
 
-                <TextInput 
-                    label="Password"
-                    placeholder="Password"
-                    underlineColor="#009dff"
-                    secureTextEntry
-                    right={<TextInput.Icon name="eye"/>}
-                    onChangeText={onPasswordChange}
-                    style={styles.inputField}
-                />
-                <HelperText style={{marginBottom: 20}}>
-                    
-                </HelperText>
+				{user.charAt(0) === 'Y'?
+					notLoggedIn():
+					null
+				}
                 <Button style={styles.button1} icon="login" mode="contained" onPress={() => {doLogin()}}>
                     {signUpButtonText}
                 </Button>
-
+				
                 </View>
                 <Button visible={false} style={styles.button2, {marginLeft: hideSignUp}} onPress={showModal}>
                     Don't have an account? Create one here!

@@ -5,6 +5,7 @@ import { View, StyleSheet, Text } from 'react-native'
 import Chordbox from './Chordbox';
 import SwapInfo from './SwapInfo'
 import getAllSuggestions from '../Script/Suggest'
+import getAllDescriptions from '../Script/Suggest2';
 import SuggestList from './SuggestList';
 
 // TURN INTO STYLESHEET
@@ -40,6 +41,9 @@ const ChordSelector = ({id, loopData, updateLoop, useKey, useMode, setVisibility
 	// Holds the current list of suggestions for the currently selected chord
 	const [suggestions, setSuggest] = useState([])
 
+	// Holds description
+	const [descriptions, setDescription] = useState([])
+
 	// The index of the chord we are currently choosing to index.
 	const [selectedIndex, setSelected] = useState(0)
 	
@@ -56,19 +60,31 @@ const ChordSelector = ({id, loopData, updateLoop, useKey, useMode, setVisibility
 	// If we swap out a chord, the present chord's current list of suggestions will be
 	// inaccurate; reload its suggestion
 
+	// useEffect(() => {
+	// 		console.log('key before suggest'+useKey)
+	// 		let res = getAllSuggestions(customLoop[0], customLoop[1], customLoop[2], customLoop[3], toEdit+1, useKey, useMode)
+	// 		let res2 = getAllDescriptions(customLoop[0], customLoop[1], customLoop[2], customLoop[3], toEdit+1, useKey, useMode)
+		
+	// 		console.log('res1'+res)
+	// 		console.log('res2'+res2)
+	
+	// 		setSuggest(res)
+	// 		setDescription(res2)
+	// 		setSelected(0)
+			
+	// }, [])
+
 	useEffect(() => {
 		
 	// 	// Dillon's functions use 1-indexing, so bump this number up by 1
-	// 	console.log(...customLoop)
-	// 	console.log('to'+toEdit+1)
-	// 	// const res = getAllSuggestions(customLoop[0], customLoop[1], customLoop[2], customLoop[3], toEdit+1, usekey, useMode)
-	console.log('key before suggest'+useKey)
 		let res = getAllSuggestions(customLoop[0], customLoop[1], customLoop[2], customLoop[3], toEdit+1, useKey, useMode)
-		// let res = getAllSuggestions(null, null, null, null, 1, null, null)
-		console.log('res'+res)
+		let res2 = getAllDescriptions(customLoop[0], customLoop[1], customLoop[2], customLoop[3], toEdit+1, useKey, useMode)
+	
+		console.log('res1'+res)
+		console.log('res2'+res2)
 
-	// 	// Save the returned list of suggestions into state
 		setSuggest(res)
+		setDescription(res2)
 		setSelected(0)
 		
 	}, [toEdit, customLoop])
@@ -93,6 +109,8 @@ const ChordSelector = ({id, loopData, updateLoop, useKey, useMode, setVisibility
 		setVisibility(false)
 		updateLoop(id, customLoop, title, setVisibility)
 	}
+
+	let t = suggestions[selectedIndex]
 
 	return (
 		<View>
@@ -141,7 +159,6 @@ const ChordSelector = ({id, loopData, updateLoop, useKey, useMode, setVisibility
 					<View>
 						<View style={{display: 'flex', flexDirection:'row'}}>
 							<View>
-								{console.log(suggestions)}
 								<SuggestList 
 									suggestions={suggestions} 
 									selectedIndex={selectedIndex} 
@@ -150,7 +167,15 @@ const ChordSelector = ({id, loopData, updateLoop, useKey, useMode, setVisibility
 							</View>
 
 							<View>
-								<SwapInfo beforeChord={customLoop[toEdit]} afterChord={suggestions[selectedIndex]} swapChords={swapChords}/>
+								{
+									console.log(descriptions[0])
+								}
+								{
+									<SwapInfo beforeChord={customLoop[toEdit]} afterChord={suggestions[selectedIndex]} description={descriptions[selectedIndex]} swapChords={swapChords}/>
+									// <SwapInfo beforeChord={customLoop[toEdit]} suggestions={suggestions} swapChords={swapChords}/>
+
+								}
+
 							</View>
 						</View>
 					</View>

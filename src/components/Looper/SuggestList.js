@@ -18,23 +18,21 @@ const SuggestList = ({suggestions, selectedIndex, handleListClick}) => {
 		<View>
 			<List.Subheader>Suggestions</List.Subheader>
 				{
-					suggestions.map((chord, index) => {
+					suggestions.map((element, index) => {
 						return (
 							// <List.Item
-							// 	button
 							// 	key={index}
 							// 	style={{width: "fit-content"}}
-							// 	value={chord}
-							// 	selected={selectedIndex === index}
-							// 	onClick={(event) => handleListClick(event, index)}
+							// 	value={element}
+							// 	onPress={(event) => handleListClick(event, index)}
 							// >
-							// 	<Text>{chord}</Text>
+							// 	<Text>{element}</Text>
 							// </List.Item>
 							<Button 
-								title={chord}
+								title={element}
 								onPress={(event) => handleListClick(event, index)}
 							>
-								{chord}
+								{element}
 							</Button>
 						)
 					})
