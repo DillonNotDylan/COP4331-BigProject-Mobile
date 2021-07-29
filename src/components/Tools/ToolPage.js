@@ -9,11 +9,15 @@ export function ToolPage(props) {
 
     return(
         <View style={styles.container}>
-            <View style={styles.projects}>
-                <ProjSelector/>
-            </View>
+
             <View style={styles.keyBox}>
-                <KeyBox currOption={!currOption} grabKey={props.grabKey} grabMode={props.grabMode} status={status} switchStatus={switchStatus}/>
+                <KeyBox 
+                    currOption={!currOption} 
+                    useKey={props.useKey}
+                    useMode={props.useMode}
+                    grabKey={props.grabKey} 
+                    grabMode={props.grabMode} 
+                    status={status} switchStatus={switchStatus}/>
             </View>
 
         </View>

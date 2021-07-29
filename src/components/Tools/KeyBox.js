@@ -9,9 +9,9 @@ import {
 	Checkbox
 } from 'react-native-paper'
 
-export function KeyBox({currOption, grabKey, grabMode, status, switchStatus}) {
+export function KeyBox({currOption, grabKey, grabMode, status, switchStatus, useKey}) {
 
-	const [currKey, setKey] = useState('C');
+	const [currKey, setKey] = useState(useKey);
 	const [keyVis, setKeyVis] = useState(false);
 	const openKeyMenu = () => setKeyVis(true);
 	const onlyCloseKey = () => setKeyVis(false); 
@@ -99,21 +99,66 @@ export function KeyBox({currOption, grabKey, grabMode, status, switchStatus}) {
 	const onlyCloseMode = () => setModeVis(false); 
 	const closeModeMenu = (mode) => {
 		switch(mode) {
-			case 'Aolian' : grabMode(1)
-			case 'Dorian' : grabMode(2)
-			case 'Phrygian' : grabMode(3)
-			case 'Lydian' : grabMode(4)
-			case 'Mixolydian' : grabMode(5)
-			case 'Ionain' : grabMode(6)
-			case 'Locrian' : grabMode(7)
+			case 'Aolian' : {
+				setMode(mode);
+				setModeVis(false);
+				grabMode(1)
+				return
+			}
+			case 'Dorian' : {
+				setMode(mode);
+				setModeVis(false);
+				grabMode(2)
+				return
+			}
+			case 'Phrygian' : {
+				setMode(mode);
+				setModeVis(false);
+				grabMode(3)
+				return
+			}
+			case 'Lydian' : {
+				setMode(mode);
+				setModeVis(false);
+				grabMode(4)
+				return
+			}
+			case 'Mixolydian' : {
+				setMode(mode);
+				setModeVis(false);
+				grabMode(5)
+				return
+			}
+			case 'Ionain' : {
+				setMode(mode);
+				setModeVis(false);
+				grabMode(6)
+				return
+			}
+			case 'Locrian' : {
+				setMode(mode);
+				setModeVis(false);
+				grabMode(7)
+				return
+			}
 		}
 		setMode(mode);
 		setModeVis(false);
 	}
 
-	
+	const [quality, currQual] = useState('Major')	
 	const [isSwitchOn, setIsSwitchOn] = useState(false);
-	const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+	const onToggleSwitch = () => {
+		if(quality == 'Minor') {
+			grabMode(1)
+			currQual('Major')
+		}
+		else {
+			grabMode(6)
+			currQual('Minor')
+		}
+		setIsSwitchOn(!isSwitchOn);
+	} 
 	
 	
 	const [basicView, setBasic] = useState('flex');
@@ -136,7 +181,7 @@ export function KeyBox({currOption, grabKey, grabMode, status, switchStatus}) {
 				<Menu
 					visible={keyVis}
 					onDismiss={onlyCloseKey}
-					anchor={<Button style={{marginTop: 5}} onPress={openKeyMenu}>{currKey}</Button>}>
+					anchor={<Button style={{marginTop: 5}} onPress={openKeyMenu}>{useKey}</Button>}>
 					
 						<Menu.Item onPress={() => closeKeyMenu('C')} title="C" />
 						<Menu.Item onPress={() => closeKeyMenu('Cs')} title="C#" />
@@ -155,10 +200,13 @@ export function KeyBox({currOption, grabKey, grabMode, status, switchStatus}) {
 
 			<Card style={styles.quality}>
 				<View style={{display: basicView}}>
-					<TouchableOpacity onPress={() => setIsSwitchOn(!isSwitchOn)}>
-						<Button style={{}}>
-							{isSwitchOn ? 'Minor' : 'Major'}
-						</Button>
+					<TouchableOpacity onPress={() => onToggleSwitch(!isSwitchOn)}>
+						
+						<Button style={{marginTop: 8}}>
+							{/* {isSwitchOn ? 'Minor' : 'Major'} */}
+							{quality}
+						</Button> 
+						
 					</TouchableOpacity>
 				</View>
 
@@ -166,7 +214,7 @@ export function KeyBox({currOption, grabKey, grabMode, status, switchStatus}) {
 					<Menu
 						visible={modeVis}
 						onDismiss={onlyCloseMode}
-						anchor={<Button style={{marginTop: 10}} onPress={openModeMenu}>{currMode}</Button>}>
+						anchor={<Button style={{marginTop: 8}} onPress={openModeMenu}>{currMode}</Button>}>
 						
 							<Menu.Item onPress={() => closeModeMenu("Aolian")} title="Aolian" />
 							<Menu.Item onPress={() => closeModeMenu("Dorian")} title="Dorian" />

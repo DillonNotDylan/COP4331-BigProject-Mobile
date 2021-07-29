@@ -4,8 +4,10 @@ import { Chordbox } from './Chordbox'
 import { Audio } from 'expo-av';
 import { Card, Button, Portal, Modal } from 'react-native-paper';
 import getChordNotes from '../Script/ChordToNote';
+import ChordSelector from './ChordSelector';
 
 import getAllSuggestions from '../Script/Suggest'
+import CustomModal from './CustomModal';
 
 function getPath(note) {
 	switch (note) {
@@ -41,20 +43,17 @@ function triggerPianoKey(note, triggerNote) {
 	return
 }
 
-async function triggerNoteAudio(note, setSound, triggerNote) {
-
-	console.log('Loading Sound');
-
+async function triggerNoteAudio(note, setSound, mainBPM) {
+	// console.log('Loading Sound');
 	if(note.includes('sharp')) {
 		note = note[0] + 's' + '3'
 		console.log('Hello!')
 	}
-	
-	console.log('note is: '+note);
+	const beatsPerMinute = (60 * 1000 ) / mainBPM
+	console.log('bpm : '+mainBPM);
 	
 	let soundPath = getPath(note);
 	let properPath = Audio.Sound.createAsync(soundPath); 
-				
 	const { sound } = await properPath;
 	setSound(sound);
 
@@ -64,26 +63,19 @@ async function triggerNoteAudio(note, setSound, triggerNote) {
 	// change notes color temporarily
 	// triggerPianoKey(note);
 
-	await new Promise(resolve => setTimeout(resolve, 1500));
+	await new Promise(resolve => setTimeout(resolve, beatsPerMinute));
 	sound.unloadAsync(); 
-
-	// useEffect( () => {
-	// 	return sound ? () => {
-	// 		console.log('Unloading Sound');
-	// 		sound.unloadAsync(); 
-	// 	}
-	// 	: undefined;
-	// 	}, [sound]
-	// );
 }
 
-async function playLoopAudio(data, setSound, triggerNote) {
+async function playLoopAudio(data, setSound, mainBPM) {
 	let i = 0
 	let j = 0
+	const beatsPerMinute = (60 * 1000 ) / mainBPM
+
 
 	for(i = 0; i < 4; i++) {
 		// Break the chord into notes
-		let chordNotes = getChordNotes(data.chords[i]);
+		let chordNotes = getChordNotes(data.progression[i]);
 
 		// Loop over the chord notes and 
 		for(j = 0; j < chordNotes.length; j++) {
@@ -91,23 +83,19 @@ async function playLoopAudio(data, setSound, triggerNote) {
 		}
 
 		for(j = 0; j < chordNotes.length; j++)
-			triggerNoteAudio(chordNotes[j], setSound);
+			triggerNoteAudio(chordNotes[j], setSound, mainBPM);
 
-		await new Promise(resolve => setTimeout(resolve, 1500));
+		await new Promise(resolve => setTimeout(resolve, beatsPerMinute));
 	}
 }
 
-
-
 export function ProgLoop (props) {
-
-
 	const containerStyle = {
         backgroundColor: 'white', 
         paddingTop: 5, 
         paddingBottom: 5, 
-        marginLeft: '5%', 
-        width: '90%',
+        marginLeft: '1.5%', 
+        width: '97%',
 
         shadowColor: "#000",
 		shadowOffset: {
@@ -119,7 +107,11 @@ export function ProgLoop (props) {
 		elevation: 8,
     }
 
+	// Formula for BPM
+	// let bpm = (60 * 1000 / 4) / tempo;
+	const [bpm, setBPM] = useState();
 	const [sound, setSound] = useState();
+	const [visible, setVisibility] = useState(false);
 	
 	function showEditModal () { 
 		setVisibility(true)
@@ -128,8 +120,6 @@ export function ProgLoop (props) {
 	function hideEditModal () { 
 		setVisibility(false)
 	}
-	
-	const [visible, setVisibility] = useState(false);
 
 	function showSuggestions(chord) {
 		let suggestions = getAllSuggestions(chord, null, null, null, 1, 'C', 1)
@@ -140,40 +130,40 @@ export function ProgLoop (props) {
 		<View style={{ display: 'flex', width: '100%', flex: 1 }}>
 			<Portal>
                 <Modal visible={visible} onDismiss={hideEditModal} contentContainerStyle={containerStyle}>
-                    <View style={{display: 'flex', flexDirection: 'row'}}>  
+                    {/* <View style={{display: 'flex', flexDirection: 'row'}}>  
           			{
 						props.loopData.chords.map(singleChord =>
 							{
 								return (
 									<TouchableOpacity style={styles.chordBox} onPress={() => showSuggestions(singleChord)}>
-									{/* <Card style={styles.chordBox}> */}
 										<Text style={styles.chord}>{singleChord}</Text>
 									</TouchableOpacity>
 								)
 							}
 						)
 					}
-                    </View>
+                    </View> */}
+					<ChordSelector id={props.id} loopData={props.loopData} updateLoop={props.updateLoop} useKey={props.useKey} useMode={props.useMode} setVisibility={setVisibility}/>
+
 					<Button onPress={() => props.deleteLoop(props.id)} style={styles.editButton}>Delete</Button>
                 </Modal>
+				<CustomModal/>
             </Portal>
 			<View style={styles.chordContainer}>
 				{
-					props.loopData.chords.map(singleChord =>
+					props.loopData.progression.map( (singleChord, index) =>
 						{
 							return (
-								// <TouchableOpacity style={styles.chordBox} onPress={() => null}>
-								<Card style={styles.chordBox}> 
+								<Card key={index} style={styles.chordBox}> 
 									<Text style={styles.chord}>{singleChord}</Text>
 								</Card>
-								// {/* </TouchableOpacity> */}
 							)
 						}
 					)
 				}
 				<View style={styles.buttons}>
-					<Button onPress={() => playLoopAudio(props.loopData, setSound, props.triggerNote)} style={styles.editButton}>Play</Button>
-					<Button onPress={() => showEditModal()} style={styles.editButton}>Edit</Button>
+					<Button onPress={() => playLoopAudio(props.loopData, setSound, props.mainBPM)} style={styles.editButton} icon='play'></Button>
+					<Button onPress={() => showEditModal()} style={styles.editButton} icon='pencil'></Button>
 				</View>
 			</View>
 		</View>
@@ -236,5 +226,6 @@ const styles = StyleSheet.create({
 	editButton: {
 		marginBottom: -5,
 		marginTop: -5,
+		marginRight: -10
 	},
 })

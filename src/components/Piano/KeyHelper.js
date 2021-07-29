@@ -102,7 +102,7 @@ class KeyHelper extends React.Component {
                 note=this.props.note.toUpperCase() + '4';
             key = (
                 <TouchableOpacity style={{ zIndex: 3 }} onPress={() => testSound(this.props.setSound, note)}>
-                    <Text style={this.props.flatCSS}></Text>   
+                    <Text style={this.props.flatCSS}></Text>
                 </TouchableOpacity>
             )
         }

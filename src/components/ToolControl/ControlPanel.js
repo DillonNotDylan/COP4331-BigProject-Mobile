@@ -142,8 +142,9 @@ const specialIsActivated = StyleSheet.flatten([
 
 export default function ControlPanel() {
 
-    const [useKey, grabKey] = useState(1)
-    const [useMode, grabMode] = useState(5)
+    const [useKey, grabKey] = useState('C')
+    const [useMode, grabMode] = useState(1)
+    const [mainBPM, grabBPM] = useState(100)
 
     const [noteToPress, triggerNote] = useState('')
     const [flatCSS, changeFlatState] = useState(flatNotActivated)
@@ -173,13 +174,19 @@ export default function ControlPanel() {
                             marginBottom: -90,
                      }}>
                     <ToolPage 
+                        useKey={useKey}
+                        useMode={useMode}
                         grabKey={grabKey} 
                         grabMode={grabMode}
-                    />
+                        />
                 </View>
                 <LoopBox 
                     useKey={useKey} 
                     useMode={useMode} 
+                    mainBPM={mainBPM}
+                    grabBPM={grabBPM}
+                    grabKey={grabKey}
+                    grabMode={grabMode}
                     triggerNote={triggerNote}
                 />
             </View>

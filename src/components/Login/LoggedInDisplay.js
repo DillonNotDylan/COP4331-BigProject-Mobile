@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import { Button, Portal, Modal, HelperText, TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -82,7 +82,7 @@ export function LoggedInDisplay(){
     const storeData = async (value) => {
         try {
             // const jsonValue = JSON.stringify(value)
-            await AsyncStorage.setItem('@storage_Key', value)
+            await AsyncStorage.setItem('@user_id', value)
         } 
 
         catch (e) {
@@ -102,9 +102,8 @@ export function LoggedInDisplay(){
     //       // error reading value
     //     }
     // }
-      
 
-    function doLogin(){
+    async function doLogin(){
         const tempUser =
         {
             email: emailText,
@@ -114,16 +113,39 @@ export function LoggedInDisplay(){
         console.log(emailText)
         console.log(passwordText)
 
+        if(user != "You are not signed in") {
+            try {
+                // const jsonValue = JSON.stringify(value)
+            } 
+    
+            catch (e) {
+                console.log('Couldnt store local data')
+            }
+            setUser("You are not signed in")
+            setSigninButton(0)
+            setSignupButton('Sign In')
+            return
+        }
+        // Hide text boxes
+        // Change Sign in to Log Out
+        // Hide sign up button
+
         axios.post("https://chordeo-grapher.herokuapp.com/user/signin", tempUser)
-        .then(function (response) {
+        .then( async function (response) {
             if (response.data.hasOwnProperty('message'))
             {
                 console.log("Something went wrong")
+                Alert.alert('invalid credentials')
+                setSigninButton(0)
+                setSignupButton('Sign In')
             }
             else
             {
                 // console.log(response)
                 console.log(response.data.nickname)
+                setSigninButton(500)
+                setSignupButton('Log Out')
+                console.log(response.data.id)
                 storeData(response.data.id)
                 setUser("Welcome " + response.data.nickname)
             }
@@ -132,6 +154,24 @@ export function LoggedInDisplay(){
             console.log(error);
         })
     }
+
+    async function setUserToNull() {
+        await AsyncStorage.setItem('@user_id', 'one')
+    }
+
+	useEffect(() => {
+        if(user == "You are not signed in") {
+            try {
+                // const jsonValue = JSON.stringify(value)
+                console.log('in here')
+                setUserToNull()
+            } 
+    
+            catch (e) {
+                console.log('Couldnt store local data')
+            }
+        }
+    }, [])
 
     function doSignUp(){
         const tempUser =
@@ -164,6 +204,9 @@ export function LoggedInDisplay(){
 
         hideModal();
     }
+
+    const [hideSignUp, setSigninButton] = useState(0)
+    const [signUpButtonText, setSignupButton] = useState('Sign In')
 
     return(
         <View style={styles.container}>
@@ -250,16 +293,13 @@ export function LoggedInDisplay(){
                     
                 </HelperText>
                 <Button style={styles.button1} icon="login" mode="contained" onPress={() => {doLogin()}}>
-                    Sign In
+                    {signUpButtonText}
                 </Button>
-{/* 
-                <Button onPress={getData}>
 
-                </Button> */}
-                <Button style={styles.button2} onPress={showModal}>
+                </View>
+                <Button visible={false} style={styles.button2, {marginLeft: hideSignUp}} onPress={showModal}>
                     Don't have an account? Create one here!
                 </Button>
-            </View>
         </View>
     );
 }
